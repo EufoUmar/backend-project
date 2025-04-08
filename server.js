@@ -14,8 +14,11 @@ app.set("views", path.resolve("./views"));
 // database connection
 
 // middleware setup
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.use("/", UserRouter)
+
+app.use("/register", UserRouter)
 
 connectToMongoDB("mongodb://127.0.0.1:27017/login-page").then( () => {
     console.log("mongoDB is connected");

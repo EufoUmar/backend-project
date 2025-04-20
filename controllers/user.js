@@ -13,9 +13,27 @@ async function registerationUser(req, res) {
         email,
         password,
     })
-    return res.render("/login");
+    return res.redirect("login");
 }
 
 // login Checking Controller function
 
-module.exports = {registerationUser}
+async function loggedInUser(req, res) {
+    const { email, password } = req.body;
+    console.log(email, password);
+
+    if (!email || !password) {
+        return res.status(400).json({ error: "All fields are required" });
+    }
+     const entry = await User.findOne({ email, password })
+    console.log(entry);
+
+     if (!entry) {
+        return res.status(400).json({ error: "Invalid email or password" });
+}
+     return res.render("home");
+}
+
+
+
+module.exports = {registerationUser, loggedInUser}

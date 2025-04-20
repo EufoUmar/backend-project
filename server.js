@@ -2,6 +2,7 @@ const express = require("express")
 const path = require("path");
 const  {connectToMongoDB}  = require("./connect");
 const UserRouter = require("./routes/user")
+const StaticRouter = require("./routes/staticRoute")
 
 const app = express();
 const PORT = 3000;
@@ -19,10 +20,13 @@ app.use(express.urlencoded({ extended: false }));
 
 
 app.use("/register", UserRouter)
+app.use("/login", StaticRouter)
 
-connectToMongoDB("mongodb://127.0.0.1:27017/login-page").then( () => {
-    console.log("mongoDB is connected");
-});
+connectToMongoDB("mongodb://localhost:27017/login-page").then( () => {
+    console.log("mongoDB is connected")
+}).catch((err) => {
+    console.log("mongoDB connection error", err)
+})
 
 app.get("/login", (req, res) => {
     res.render("login.ejs");

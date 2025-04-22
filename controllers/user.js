@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const { setUser } = require("../services/auth")
 
 
 async function registerationUser(req, res) {
@@ -25,13 +26,16 @@ async function loggedInUser(req, res) {
     if (!email || !password) {
         return res.status(400).json({ error: "All fields are required" });
     }
-     const entry = await User.findOne({ email, password })
-    console.log(entry);
+     const user = await User.findOne({ email, password })
+    console.log(user);
 
-     if (!entry) {
+     if (!user) {
         return res.status(400).json({ error: "Invalid email or password" });
 }
-     return res.render("home");
+
+     const toten = setUser(user)
+     res.cookie("uid", toten)
+     return res.render("home")
 }
 
 
